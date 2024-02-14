@@ -1,0 +1,33 @@
+version: 1
+default_environment: dev
+project_id: a14d3e24-830d-4466-a666-d576d2e47441
+environments:
+- name: dev
+- name: staging
+- name: prod
+plugins:
+  extractors:
+  - name: tap-csv
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/tap-csv.git
+    config:
+      csv_files_definition: extract/schema.json
+      files:
+      - entity: order_details
+        path: data/order_details.csv
+        keys:
+        - order_id
+      add_metadata_columns: false
+  loaders:
+  - name: target-postgres
+    variant: meltanolabs
+    pip_url: meltanolabs-target-postgres
+    config:
+      activate_version: false
+      add_record_metadata: false
+      database: airflow_db
+      default_target_schema: public
+      load_method: append-only
+      host: localhost
+      port: 32769
+      user: airflow
