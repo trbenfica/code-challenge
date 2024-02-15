@@ -18,6 +18,14 @@ plugins:
         keys:
         - order_id
       add_metadata_columns: false
+  - name: tap-postgres
+    variant: meltanolabs
+    pip_url: git+https://github.com/MeltanoLabs/tap-postgres.git
+    config:
+      database: northwind
+      host: localhost
+      port: 5432
+      user: northwind_user
   loaders:
   - name: target-postgres
     variant: meltanolabs
@@ -31,3 +39,8 @@ plugins:
       host: localhost
       port: 32769
       user: airflow
+  - name: target-csv
+    variant: hotgluexyz
+    pip_url: git+https://github.com/hotgluexyz/target-csv.git
+    config:
+      destination_path: extract/
